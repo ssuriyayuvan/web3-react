@@ -1,12 +1,11 @@
 
 import Web3 from 'web3';
 import { useEffect, useState } from 'react';
+import ImportAccount from "./ImportAccount.js";
 const web3 = new Web3('http://localhost:8545');
 
-
-
 function App() {
-
+  const [privateKey, setprivateKey]= useState('')
   const [password, setPassword] = useState('');
 
   // console.log('wallet is', thulasiWallet1['0'].address, thulasiWallet2['0'].address,);
@@ -51,6 +50,8 @@ function App() {
       <button onClick={createWallet}>Create Wallet</button>
       <button onClick={addAccountToWallet}>Add Account to Wallet</button>
       <button onClick={showWallet}>Show Wallet</button>
+      <input type="text" value={privateKey} onChange={(e) => setprivateKey(e.target.value)}/>
+      <ImportAccount privateKey={privateKey} />
     </div>
   );
 }
