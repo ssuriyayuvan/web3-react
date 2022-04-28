@@ -1,22 +1,30 @@
 
 import Web3 from 'web3';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Contract from './Contract';
-const web3 = new Web3('https://mainnet.infura.io/v3/35a21f83c4bb4ff28cb99ce7f2c051ee');
+import { Modal } from './Modal.js';
+import  ConfirmTransaction  from './confirmTransaction';
+import ImportAccount from "./ImportAccount.js";
 const WALLET_NAME = 'magnetar_wallet';
+const web3 = new Web3('http://localhost:8545');
+
 
 
 function App() {
-
+  const [privateKey, setprivateKey]= useState('')
   const [password, setPassword] = useState('');
   const [list, setList] = useState([]);
   const [importKey, setImportKey] = useState('');
+  const[tx, settx] = useState({to:"",value:"",gas:""});
 
-  // console.log('wallet is', thulasiWallet1['0'].address, thulasiWallet2['0'].address,);
-  useEffect(() => {
-    // addWallet()
-    // addWallet();
-  }, []);
+  const handleChange =  e => {
+    // const { to, value, gas} = e.target;
+    const name = e.target.name;
+    settx(prevState => ({
+        ...prevState,
+        [name]: e.target.value
+    }))
+  }
   const createWallet = async () => {
     if (password) {
       const thulasiWallet1 =  web3.eth.accounts.wallet.create(1);
@@ -115,6 +123,34 @@ function App() {
       }) : <tr><td></td><td>No Account Found.</td><td></td></tr>}
       </tbody>
       </table>
+      <button onClick={showWallet}>Show Wallet</button>
+      <input type="text" value={privateKey} onChange={(e) => setprivateKey(e.target.value)}/>
+      <ImportAccount privateKey={privateKey} />
+      <div>
+        <h2>Sign</h2>
+        <input
+              value={tx.to}
+              type="text"
+              onChange={handleChange}
+              name="to"
+          />
+          <input
+              value={tx.value}
+              type="number"
+              onChange={handleChange}
+              name="value"
+          />
+          <input
+              value={tx.gas}
+              type="text"
+              onChange={handleChange}
+              name="gas"
+          />
+        
+          <Modal>
+            <ConfirmTransaction tx={tx} password={password}/>
+          </Modal>
+      </div>
     </div>
   );
 }
