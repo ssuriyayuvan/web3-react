@@ -1,7 +1,8 @@
 
 import Web3 from 'web3';
 import { useEffect, useState } from 'react';
-const web3 = new Web3('https://ropsten.infura.io/v3/35a21f83c4bb4ff28cb99ce7f2c051ee');
+import Contract from './Contract';
+const web3 = new Web3('https://mainnet.infura.io/v3/35a21f83c4bb4ff28cb99ce7f2c051ee');
 const WALLET_NAME = 'magnetar_wallet';
 
 
@@ -60,7 +61,7 @@ function App() {
     try {
       if(importKey) {
         let data = web3.eth.accounts.privateKeyToAccount(importKey);
-       let addtoWallet =  web3.eth.accounts.wallet.add({
+        web3.eth.accounts.wallet.add({
           address: data.address, privateKey: data.privateKey
         });
         web3.eth.accounts.wallet.save(password, WALLET_NAME);
@@ -69,14 +70,15 @@ function App() {
       } else {
         alert('Please enter private key to import')
       }
-     
     } catch (error) {
       alert('Wrong private key');
     }
   }
 
+
   return (
     <div className="App">
+      <h2>Account Creation</h2>
       <label>Password</label>
       <input type='text' value={password} onChange={(e) => setPassword(e.target.value)} />
       <button onClick={createWallet}>Create Wallet</button>
@@ -84,7 +86,11 @@ function App() {
       <button onClick={showWallet}>Show Wallet</button><br />
       <label>Import Key</label>
       <input type={'text'} onChange={(e)=> setImportKey(e.target.value)} />
-      <button onClick={importFromPrivateKey} >Import Account</button>
+      <button onClick={importFromPrivateKey} >Import Account</button> <br />
+      <hr />
+      <h2>Import Token</h2>
+      <Contract />
+      <hr /> <br />
       <h2>Account List</h2>
       <table>
       <thead>
