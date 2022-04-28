@@ -15,9 +15,8 @@ const ConfirmTransaction = ({ tx, password }) => {
         const signedtx = await web3.eth.accounts.signTransaction(tx, privateKey)
         console.log('signed transaction',signedtx)
         setacknowledge(true)
-        } catch (error) {
-            console.log('err...', error.message);
-            // alert("wrong signature", error.message)
+        } catch (error) {            
+            alert("wrong signature", error.message)
         }
      
     }
