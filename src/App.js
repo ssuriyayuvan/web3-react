@@ -5,6 +5,7 @@ import Contract from './Contract';
 import { Modal } from './Modal.js';
 import  ConfirmTransaction  from './confirmTransaction';
 import ImportAccount from "./ImportAccount.js";
+import p2p from "./p2p.js"
 const WALLET_NAME = 'magnetar_wallet';
 const web3 = new Web3('http://localhost:8545');
 
@@ -16,6 +17,8 @@ function App() {
   const [list, setList] = useState([]);
   const [importKey, setImportKey] = useState('');
   const[tx, settx] = useState({to:"",value:"",gas:""});
+  const[p2ptx, setp2ptx] = useState('');
+  const[p2pvalue,setp2pvalue] = useState('');
 
   const handleChange =  e => {
     // const { to, value, gas} = e.target;
@@ -92,6 +95,18 @@ function App() {
       <button onClick={createWallet}>Create Wallet</button>
       <button onClick={addAccountToWallet}>Add Account to Wallet</button>
       <button onClick={showWallet}>Show Wallet</button><br />
+      <input
+              value={p2ptx.to}
+              type="text"
+              onChange={(e) => setp2ptx(e.target.value)}  
+          />
+          <input
+              value={p2pvalue.value}
+              type="number"
+              onChange={(e) => setp2pvalue(e.target.value)}
+              name="value"
+          />
+      <p2p to={to} value={value} privateKey={privateKey} publicAddress={publicAddress}/>
       <label>Import Key</label>
       <input type={'text'} onChange={(e)=> setImportKey(e.target.value)} />
       <button onClick={importFromPrivateKey} >Import Account</button> <br />
